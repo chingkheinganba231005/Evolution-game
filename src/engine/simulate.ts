@@ -7,6 +7,7 @@
  */
 
 import { buildController } from './controllers';
+import { observe } from './creature-runtime';
 import type { BehaviourDescriptors, CreatureGenome } from './genome/types';
 import { morphologyExtent } from './genome/build';
 import { buildCreature } from './physics/creature';
@@ -41,10 +42,6 @@ export interface EvaluationResult {
 }
 
 const DEFAULT_DT = 1 / 120;
-
-function clamp(x: number, lo: number, hi: number): number {
-  return x < lo ? lo : x > hi ? hi : x;
-}
 
 export function evaluate(params: EvaluateParams): EvaluationResult {
   const { genome, env, weights, seed } = params;
@@ -128,20 +125,7 @@ export function evaluate(params: EvaluateParams): EvaluationResult {
     const t = step * dt;
 
     // --- Observations (fixed layout) ---
-    inputs[0] = Math.sin(root.angle);
-    inputs[1] = Math.cos(root.angle);
-    inputs[2] = clamp(root.angularVelocity / 10, -1, 1);
-    inputs[3] = clamp(root.velocity.x / 8, -1, 1);
-    inputs[4] = clamp(root.velocity.y / 8, -1, 1);
-    inputs[5] = 1; // target direction (forward = +x)
-    let idx = 6;
-    for (const j of jointBodies) {
-      inputs[idx++] = clamp(j.angle / Math.PI, -1, 1);
-      inputs[idx++] = clamp((j.bodyB.angularVelocity - j.bodyA.angularVelocity) / 10, -1, 1);
-    }
-    for (const s of creature.sensorBodies) {
-      inputs[idx++] = s.contactCount > 0 ? 1 : 0;
-    }
+    observe(creature, inputs);
 
     // --- Control ---
     const outputs = controller.step(inputs, t);

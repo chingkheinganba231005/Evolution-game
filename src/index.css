@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-graphite-950 text-slate-200 font-sans antialiased;
+  margin: 0;
+}
+
+:root.light body {
+  @apply bg-slate-100 text-slate-800;
+  color-scheme: light;
+}
+
+@layer components {
+  .glass {
+    @apply rounded-xl border border-white/5 bg-graphite-850/70 shadow-glass backdrop-blur-sm;
+  }
+  :root.light .glass {
+    @apply border-slate-300/60 bg-white/80;
+  }
+  .panel-title {
+    @apply text-xs font-semibold uppercase tracking-wider text-slate-400;
+  }
+  .mono {
+    @apply font-mono text-xs;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium
+      transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-specimen
+      disabled:cursor-not-allowed disabled:opacity-40;
+  }
+  .btn-primary {
+    @apply btn bg-specimen text-graphite-950 hover:bg-specimen-bright;
+  }
+  .btn-ghost {
+    @apply btn border border-white/10 bg-white/5 text-slate-200 hover:bg-white/10;
+  }
+  :root.light .btn-ghost {
+    @apply border-slate-300 bg-slate-200/60 text-slate-700 hover:bg-slate-200;
+  }
+  .btn-danger {
+    @apply btn border border-signal-rose/40 bg-signal-rose/10 text-signal-rose hover:bg-signal-rose/20;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-[11px] text-slate-300;
+  }
+  .input {
+    @apply w-full rounded-lg border border-white/10 bg-graphite-900 px-2.5 py-1.5 text-sm text-slate-100
+      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-specimen;
+  }
+  :root.light .input {
+    @apply border-slate-300 bg-white text-slate-800;
+  }
+  .tab {
+    @apply rounded-md px-2.5 py-1 text-xs font-medium text-slate-400 hover:text-slate-200 transition-colors;
+  }
+  .tab-active {
+    @apply bg-specimen/15 text-specimen;
+  }
+}
+
+/* Range slider styling */
+input[type='range'] {
+  @apply h-1.5 w-full cursor-pointer appearance-none rounded-full bg-white/10;
+}
+input[type='range']::-webkit-slider-thumb {
+  @apply h-3.5 w-3.5 appearance-none rounded-full bg-specimen;
+}
+input[type='range']::-moz-range-thumb {
+  @apply h-3.5 w-3.5 rounded-full border-0 bg-specimen;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+.reduce-motion * {
+  animation-duration: 0.001ms !important;
+  transition-duration: 0.001ms !important;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-white/10;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
