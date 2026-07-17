@@ -25,6 +25,7 @@ export interface ViewportProps {
   light?: boolean;
   autoPlay?: boolean;
   compact?: boolean;
+  showPerf?: boolean;
 }
 
 const DEFAULT_OVERLAYS: Omit<RenderOverlays, 'centerOfMass'> = {
@@ -45,6 +46,7 @@ export function SimulationViewport({
   light = false,
   autoPlay = true,
   compact = false,
+  showPerf = false,
 }: ViewportProps): React.ReactElement {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -61,6 +63,8 @@ export function SimulationViewport({
   const [overlays, setOverlays] = useState(DEFAULT_OVERLAYS);
   const [showOverlayMenu, setShowOverlayMenu] = useState(false);
   const [simTime, setSimTime] = useState(0);
+  const [fps, setFps] = useState(0);
+  const fpsRef = useRef({ frames: 0, last: 0 });
 
   const resolved = useMemo(() => resolveEnvironment(env.kind, env.preset), [env.kind, env.preset]);
 
@@ -143,6 +147,14 @@ export function SimulationViewport({
       }
       draw();
       if (playing && sim) setSimTime(sim.time);
+      // FPS counter.
+      const f = fpsRef.current;
+      f.frames++;
+      if (t - f.last > 500) {
+        setFps((f.frames * 1000) / (t - f.last));
+        f.frames = 0;
+        f.last = t;
+      }
       rafRef.current = requestAnimationFrame(loop);
     };
     rafRef.current = requestAnimationFrame(loop);
@@ -188,6 +200,13 @@ export function SimulationViewport({
             <span className="chip pointer-events-auto text-signal-rose">unstable — restart</span>
           )}
         </div>
+        {showPerf && (
+          <div className="pointer-events-none absolute right-2 top-2 rounded bg-black/50 px-2 py-1 text-right font-mono text-[10px] text-specimen">
+            <div>{fps.toFixed(0)} fps</div>
+            <div>{simRef.current?.world.bodies.length ?? 0} bodies</div>
+            <div>120 steps/s</div>
+          </div>
+        )}
         {genome === null && (
           <div className="absolute inset-0 grid place-items-center text-sm text-slate-500">
             No creature loaded

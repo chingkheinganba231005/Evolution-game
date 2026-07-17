@@ -72,8 +72,16 @@ Legend: `[x]` done · `[~]` partial · `[ ]` todo
 - [x] Learn section
 - [x] Accessibility (reduced motion, focus, contrast, labels)
 - [x] Responsive behaviour
-- [x] Robust error handling + boundaries
+- [x] Robust error handling + boundaries (route + widget error boundaries)
 - [x] Evolution diary (deterministic)
+- [x] Developer performance overlay (FPS / bodies / physics steps)
+
+## Deferred (documented as future work)
+- [~] Climbing environment (interface supports it; not yet implemented)
+- [~] Carrying environment (documented as recommended next milestone)
+- [~] Full structural graph crossover (currently parameter/uniform + clone fallback)
+- [~] Catastrophe events / environmental timeline / fossil record / mutation microscope
+      (creative stretch features beyond the reliable MVP + implemented stretch set)
 
 ## Verification
 - [x] `pnpm lint`

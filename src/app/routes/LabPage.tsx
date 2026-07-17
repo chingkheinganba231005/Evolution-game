@@ -245,6 +245,7 @@ export function LabPage(): React.ReactElement {
                 ghostGenome={ghost}
                 colorBlind={settings.colorBlind}
                 light={settings.theme === 'light'}
+                showPerf={settings.showPerfOverlay}
               />
             </WidgetErrorBoundary>
           </div>
