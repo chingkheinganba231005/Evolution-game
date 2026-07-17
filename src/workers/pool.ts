@@ -32,6 +32,8 @@ export interface PoolStats {
 }
 
 function canUseWorkers(): boolean {
+  // A standalone single-file build has no separate worker asset to load.
+  if (import.meta.env?.VITE_FORCE_SINGLE_THREAD === '1') return false;
   return typeof Worker !== 'undefined';
 }
 
